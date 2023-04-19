@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import NavbarComponent from "./components/navigation/NavbarComponent";
 import AddVehicleComponent from "./components/vehicles/AddVehicleComponent";
 import EditVehicleComponent from "./components/vehicles/EditVehicleComponent";
