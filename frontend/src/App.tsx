@@ -4,13 +4,14 @@ import AddVehicleComponent from "./components/vehicles/AddVehicleComponent";
 import EditVehicleComponent from "./components/vehicles/EditVehicleComponent";
 import VehicleListComponent from "./components/vehicles/VehicleListComponent";
 import ViewVehicleComponent from "./components/vehicles/ViewVehicleComponent";
+import HomeComponent from "./components/HomeComponent";
 
 function App() {
     return (
         <>
             <NavbarComponent/>
             <Routes>
-                <Route path={'/'} element={<Navigate to={'/vehicles/list'}/>}/>
+                <Route path={'/'} element={<HomeComponent/>}/>
                 <Route path={'/vehicles/list'} element={<VehicleListComponent/>}/>
                 <Route path={'/vehicles/add'} element={<AddVehicleComponent/>}/>
                 <Route path={'/vehicles/view/:vehicleId'} element={<ViewVehicleComponent/>}/>
