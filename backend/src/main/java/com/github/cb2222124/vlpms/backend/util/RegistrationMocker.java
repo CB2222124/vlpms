@@ -35,7 +35,7 @@ public class RegistrationMocker implements ApplicationRunner {
             String num1 = String.valueOf(random.nextInt(10));
             String num2 = String.valueOf(random.nextInt(10));
             String registration = "%s%s%s%s%s%s%s".formatted(char1, char2, num1, num2, char3, char4, char5);
-            registrationRepository.save(new Registration(registration, "Current"));
+            addRegistration(registration, "Current");
         }
     }
 
@@ -49,7 +49,7 @@ public class RegistrationMocker implements ApplicationRunner {
             int numberLength = random.nextInt(1, 4); //Produce more even spread of 1/2/3-digit numbers.
             String nums = String.valueOf(random.nextInt((int) Math.pow(10, numberLength)));
             String registration = "%s%s%s%s%s".formatted(char1, nums, char2, char3, char4);
-            registrationRepository.save(new Registration(registration, "Prefix"));
+            addRegistration(registration, "Prefix");
         }
     }
 
@@ -63,7 +63,14 @@ public class RegistrationMocker implements ApplicationRunner {
             int numberLength = random.nextInt(1, 4); //Produce more even spread of 1/2/3-digit numbers.
             String nums = String.valueOf(random.nextInt((int) Math.pow(10, numberLength)));
             String registration = "%s%s%s%s%s".formatted(char1, char2, char3, nums, char4);
-            registrationRepository.save(new Registration(registration, "Suffix"));
+            addRegistration(registration, "Suffix");
         }
+    }
+
+    private void addRegistration(String registration, String style) {
+        Registration registrationEntity = new Registration();
+        registrationEntity.setRegistration(registration);
+        registrationEntity.setStyle(style);
+        registrationRepository.save(registrationEntity);
     }
 }
