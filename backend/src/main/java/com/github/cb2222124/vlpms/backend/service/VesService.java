@@ -36,4 +36,9 @@ public class VesService {
                 .bodyToMono(VesResponse.class)
                 .block();
     }
+
+    public boolean registrationYoungerThanDate(String registration, String date) {
+        //TODO: Calculate if desired registration describes a date younger than the target vehicle.
+        return true;
+    }
 }

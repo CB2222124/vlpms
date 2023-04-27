@@ -52,11 +52,11 @@ public class RegistrationSearcher {
 
         for (int i = 1; i < s1.length + 1; i++) {
             for (int j = 1; j < s2.length + 1; j++) {
-                int distance1 = distance[i - 1][j] + 1;
-                int distance2 = distance[i][j - 1] + 1;
-                int distance3 = distance[i - 1][j - 1];
-                if (s1[i - 1] != s2[j - 1]) distance3 += 1;
-                distance[i][j] = Math.min(Math.min(distance1, distance2), distance3);
+                int distanceDel = distance[i - 1][j] + 1;
+                int distanceIns = distance[i][j - 1] + 1;
+                int distanceSub = distance[i - 1][j - 1];
+                if (s1[i - 1] != s2[j - 1]) distanceSub += 1;
+                distance[i][j] = Math.min(Math.min(distanceDel, distanceIns), distanceSub);
             }
         }
         return distance[s1.length][s2.length];

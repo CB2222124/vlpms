@@ -25,11 +25,6 @@ public class RegistrationController {
             @RequestParam @NotBlank @Pattern(regexp = RegistrationRegex.ALL) String registration,
             @RequestParam @NotBlank @Pattern(regexp = RegistrationRegex.ALL) String targetRegistration) {
         VesResponse response = vesService.queryRegistration(targetRegistration);
-        return registrationYoungerThanDate(registration, response.yearOfManufacture());
-    }
-
-    private boolean registrationYoungerThanDate(String registration, String date) {
-        //TODO: Calculate if desired registration describes a date younger than the target vehicle.
-        return true;
+        return vesService.registrationYoungerThanDate(registration, response.yearOfManufacture());
     }
 }
