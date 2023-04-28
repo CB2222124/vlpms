@@ -1,6 +1,6 @@
 package com.github.cb2222124.vlpms.backend.service;
 
-import com.github.cb2222124.vlpms.backend.dto.VesResponse;
+import com.github.cb2222124.vlpms.backend.dto.VesResponseDTO;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,13 +27,13 @@ public class VesService {
                 .build();
     }
 
-    public VesResponse queryRegistration(String registration) {
+    public VesResponseDTO queryRegistration(String registration) {
         String request = new JSONObject().appendField("registrationNumber", registration).toJSONString();
         return webClient.post()
                 .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(request.getBytes(StandardCharsets.UTF_8).length))
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(VesResponse.class)
+                .bodyToMono(VesResponseDTO.class)
                 .block();
     }
 

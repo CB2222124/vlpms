@@ -6,19 +6,10 @@ import java.util.Random;
 /**
  * Development test utility class for building various types of mock registrations. Dateless, Northern Ireland and
  * diplomatic plates have not been implemented.
+ * NOTE: This implementation is vulnerable to generating duplicate registrations.
  */
+@SuppressWarnings("unused")
 public class MockRegistrationBuilder {
-
-    public static void main(String[] args) throws IOException {
-        try (FileOutputStream current = new FileOutputStream("mock-registrations.txt", true);
-             FileOutputStream prefix = new FileOutputStream("mock-registrations.txt", true);
-             FileOutputStream suffix = new FileOutputStream("mock-registrations.txt", true)) {
-            MockRegistrationBuilder mrb = new MockRegistrationBuilder();
-            mrb.writeCurrent(current, 1000000);
-            mrb.writePrefix(prefix, 1000000);
-            mrb.writeSuffix(suffix, 1000000);
-        }
-    }
 
     /**
      * Writes mock registrations to an output stream following the current pattern.
@@ -41,7 +32,13 @@ public class MockRegistrationBuilder {
                 char char5 = (char) (random.nextInt(26) + 'A');
                 String num1 = String.valueOf(random.nextInt(10));
                 String num2 = String.valueOf(random.nextInt(10));
-                bw.append(char1).append(char2).append(num1).append(num2).append(char3).append(char4).append(char5).append("\n");
+                String registration = String.valueOf(char1) + char2 + num1 + num2 + char3 + char4 + char5;
+                int price = random.nextInt(10000, 100000);
+                bw.append("SELECT list_new_registration('")
+                        .append(registration).append("',")
+                        .append("'Current'").append(",")
+                        .append(String.valueOf(price))
+                        .append(");");
             }
         }
     }
@@ -66,7 +63,13 @@ public class MockRegistrationBuilder {
                 char char4 = (char) (random.nextInt(26) + 'A');
                 int numberLength = random.nextInt(1, 4); //Produce more even spread of 1/2/3-digit numbers.
                 String nums = String.valueOf(random.nextInt((int) Math.pow(10, numberLength)));
-                bw.append(char1).append(nums).append(char2).append(char3).append(char4).append("\n");
+                String registration = char1 + nums + char2 + char3 + char4;
+                int price = random.nextInt(10000, 100000);
+                bw.append("SELECT list_new_registration('")
+                        .append(registration).append("',")
+                        .append("'Prefix'").append(",")
+                        .append(String.valueOf(price))
+                        .append(");");
             }
         }
     }
@@ -91,7 +94,13 @@ public class MockRegistrationBuilder {
                 char char4 = (char) (random.nextInt(26) + 'A');
                 int numberLength = random.nextInt(1, 4); //Produce more even spread of 1/2/3-digit numbers.
                 String nums = String.valueOf(random.nextInt((int) Math.pow(10, numberLength)));
-                bw.append(char1).append(char2).append(char3).append(nums).append(char4).append("\n");
+                String registration = String.valueOf(char1) + char2 + char3 + nums + char4;
+                int price = random.nextInt(10000, 100000);
+                bw.append("SELECT list_new_registration('")
+                        .append(registration).append("',")
+                        .append("'Suffix'").append(",")
+                        .append(String.valueOf(price))
+                        .append(");");
             }
         }
     }
