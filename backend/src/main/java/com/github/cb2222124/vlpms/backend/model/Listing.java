@@ -1,5 +1,6 @@
 package com.github.cb2222124.vlpms.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class Listing {
     @Id
     private String id;
 
+    @JsonBackReference
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     private Registration registration;

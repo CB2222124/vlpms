@@ -1,13 +1,13 @@
 package com.github.cb2222124.vlpms.backend.controller;
 
-import com.github.cb2222124.vlpms.backend.dto.request.AssignRegistrationRequest;
 import com.github.cb2222124.vlpms.backend.dto.request.NewListingRequest;
 import com.github.cb2222124.vlpms.backend.dto.response.TransferableResponse;
 import com.github.cb2222124.vlpms.backend.dto.response.VesResponse;
+import com.github.cb2222124.vlpms.backend.exception.ListingException;
 import com.github.cb2222124.vlpms.backend.exception.TransferableException;
 import com.github.cb2222124.vlpms.backend.exception.VesException;
 import com.github.cb2222124.vlpms.backend.model.Listing;
-import com.github.cb2222124.vlpms.backend.model.Registration;
+import com.github.cb2222124.vlpms.backend.service.ListingService;
 import com.github.cb2222124.vlpms.backend.service.TransferableService;
 import com.github.cb2222124.vlpms.backend.service.VesService;
 import com.github.cb2222124.vlpms.backend.util.RegistrationRegex;
@@ -22,22 +22,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/registration")
 public class RegistrationController {
 
+    private final ListingService listingService;
     private final TransferableService registrationService;
     private final VesService vesService;
 
-    public RegistrationController(TransferableService registrationService, VesService vesService) {
+    public RegistrationController(ListingService listingService, TransferableService registrationService, VesService vesService) {
+        this.listingService = listingService;
         this.registrationService = registrationService;
         this.vesService = vesService;
     }
 
     @PostMapping("/list")
-    public Listing list(NewListingRequest listingDTO) {
-        return null;
+    public ResponseEntity<Listing> list(NewListingRequest listingDTO) {
+        return ResponseEntity.ok(listingService.createAndListRegistration(listingDTO.registration(), listingDTO.pricePence()));
     }
 
-    @PostMapping("/assign")
-    public Registration assign(AssignRegistrationRequest registrationDTO) {
-        return null;
+    @ExceptionHandler(ListingException.class)
+    public ResponseEntity<ListingException> handleListingException(ListingException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex);
     }
 
     @GetMapping("/transferable")
