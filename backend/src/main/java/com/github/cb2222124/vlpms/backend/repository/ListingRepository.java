@@ -7,11 +7,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-@SuppressWarnings("unused")
+import java.util.Optional;
+
 @RepositoryRestResource(collectionResourceRel = "listing", path = "listing")
 public interface ListingRepository extends Repository<Listing, String> {
 
-    @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration_registration)", nativeQuery = true)
+    @SuppressWarnings("unused")
+    @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration)", nativeQuery = true)
     Page<Listing> similar(@Param("target") String target, Pageable pageable);
+
+    @RestResource(exported = false)
+    Optional<Listing> findById(String registration);
+
+    @RestResource(exported = false)
+    void delete(Listing listing);
 }

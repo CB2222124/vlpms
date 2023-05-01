@@ -17,7 +17,7 @@ import java.util.List;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -25,8 +25,14 @@ public class Customer {
     private String username;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "customer_owned_registrations",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "registration"))
     private List<Registration> ownedRegistrations;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "customer_wishlisted_listings",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "registration"))
     private List<Listing> wishlistedListings;
 }

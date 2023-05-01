@@ -19,8 +19,10 @@ public class Listing {
 
     @JsonBackReference
     @MapsId
+    @JoinColumn(name = "registration")
     @OneToOne(fetch = FetchType.LAZY)
     private Registration registration;
 
     private int pricePence;
+
 }

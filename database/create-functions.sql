@@ -58,7 +58,7 @@ BEGIN
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Current')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration_registration, price_pence)
+    INSERT INTO listing (registration, price_pence)
     VALUES (new_registration, new_price_pence)
     ON CONFLICT DO NOTHING;
 END;
@@ -77,7 +77,7 @@ BEGIN
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Prefix')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration_registration, price_pence)
+    INSERT INTO listing (registration, price_pence)
     VALUES (new_registration, new_price_pence)
     ON CONFLICT DO NOTHING;
 END;
@@ -96,7 +96,7 @@ BEGIN
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Suffix')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration_registration, price_pence)
+    INSERT INTO listing (registration, price_pence)
     VALUES (new_registration, new_price_pence)
     ON CONFLICT DO NOTHING;
 END;

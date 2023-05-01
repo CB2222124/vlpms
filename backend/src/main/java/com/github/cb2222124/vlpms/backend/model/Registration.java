@@ -1,7 +1,7 @@
 package com.github.cb2222124.vlpms.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,7 +22,7 @@ public class Registration {
 
     private String style;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Listing listing;
 
@@ -30,5 +30,4 @@ public class Registration {
         this.registration = registration;
         this.style = style;
     }
-
 }
