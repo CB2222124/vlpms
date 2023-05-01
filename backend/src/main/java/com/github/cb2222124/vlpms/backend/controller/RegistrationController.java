@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequestMapping("/registration")
+@CrossOrigin(origins = "http://localhost:9001")
 public class RegistrationController {
 
     private final ListingService listingService;

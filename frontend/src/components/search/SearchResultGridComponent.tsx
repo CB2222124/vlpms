@@ -15,8 +15,8 @@ function SearchResultGridComponent(props: Props) {
     return (
         <>
             <div className="d-flex flex-wrap">
-                {searchResultList.map((searchResult: SearchResultData) => {
-                    return <SearchResultComponent searchResultData={searchResult}/>;
+                {searchResultList.map((searchResult: SearchResultData, index) => {
+                    return (<div key = {index}><SearchResultComponent searchResultData={searchResult}/></div>);
                 })}
             </div>
         </>

@@ -5,8 +5,8 @@ DECLARE
 BEGIN
     result := chr(65 + floor(random() * 26)::int) ||
               chr(65 + floor(random() * 26)::int) ||
-              floor(random() * 100)::text ||
-              floor(random() * 100)::text ||
+              floor(random() * 10)::text ||
+              floor(random() * 10)::text ||
               chr(65 + floor(random() * 26)::int) ||
               chr(65 + floor(random() * 26)::int) ||
               chr(65 + floor(random() * 26)::int);
@@ -54,7 +54,7 @@ DECLARE
     new_price_pence  INTEGER;
 BEGIN
     new_registration := random_current_registration();
-    new_price_pence := floor(random() * 10 + 1)::int;
+    new_price_pence := floor(random() * (1000)) * 100::int;
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Current')
     ON CONFLICT DO NOTHING;
