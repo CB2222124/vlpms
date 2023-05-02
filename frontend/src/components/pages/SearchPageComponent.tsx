@@ -1,16 +1,42 @@
 import React, {useEffect, useState} from "react";
 import SearchResultGridComponent from "../search/SearchResultGridComponent";
 import axios from 'axios';
-import {SearchResultData} from "../search/SearchResultComponent";
+import SearchToolbarComponent from "../search/SearchToolbarComponent";
+import {useLocation} from "react-router-dom";
+
+export interface SearchData {
+    sort: string;
+    style: string;
+    similar: string;
+    page: number;
+}
+
+export interface SearchResultData {
+    registration: String;
+    pricePence: number;
+    dateListed: String;
+}
 
 function SearchPageComponent() {
 
-    const [data, setData] = useState<SearchResultData[]>([]);
+    const [searchData, setSearchData] = useState<SearchData>({
+        sort: "dateListed%2Cdesc",
+        style: "",
+        similar: "",
+        page: 0
+    });
 
-    useEffect(() => {
-        axios.get('http://localhost:8080/listing?page=0&size=20&sort=dateListed%2Cdesc', {params: {size: 20}})
+    const [searchResultData, setSearchResultData] = useState<SearchResultData[]>([]);
+
+    const location = useLocation();
+
+    const performSearch = (data: SearchData) => {
+        const similar: string = data.similar.toUpperCase().trim();
+        axios.get(similar == ""
+            ? `http://localhost:8080/listing?page=${data.page}&size=20&sort=${data.sort}`
+            : `http://localhost:8080/listing/search/similar?target=${similar}&page=${data.page}&size=20`)
             .then(response => {
-                setData(response.data._embedded.listing.map((listing: any) => {
+                setSearchResultData(response.data._embedded.listing.map((listing: any) => {
                     return {
                         registration: listing.id,
                         pricePence: listing.pricePence,
@@ -19,11 +45,26 @@ function SearchPageComponent() {
                 }));
             })
             .catch(error => console.log(error))
-    }, []);
+    }
+
+    useEffect(() => {
+        const {state} = location;
+        if(state != undefined){
+            const {search} = state;
+            performSearch({sort: "", style: "", page: 0, similar: search});
+        } else {
+            performSearch(searchData);
+        }
+    }, [location]);
 
     return (
-        <div className="container">
-            <SearchResultGridComponent searchResultList={data}/>
+        <div className="d-flex ms-2 mt-2">
+            <div className="search__toolbar me-2">
+                <SearchToolbarComponent searchData={searchData} setSearchData={setSearchData}
+                                        performSearch={performSearch}/>
+            </div>
+            <div className="vr"/>
+            <SearchResultGridComponent searchResultList={searchResultData}/>
         </div>
     )
 }

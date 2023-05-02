@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 function NavbarComponent() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-success bg-gradient">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient">
             <Link to={"/"} className="navbar-brand">
                 <i className="fa fa-car me-2 ms-2"/>
                 <span>VLPMS | </span>

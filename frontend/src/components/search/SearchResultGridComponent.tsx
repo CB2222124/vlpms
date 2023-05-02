@@ -1,6 +1,6 @@
 import React from "react";
 import SearchResultComponent from "./SearchResultComponent";
-import {SearchResultData} from "./SearchResultComponent";
+import {SearchResultData} from "../pages/SearchPageComponent";
 
 interface Props {
     searchResultList: SearchResultData[];

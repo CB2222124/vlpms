@@ -1,8 +1,10 @@
+/* Font */
 @font-face {
     font-family: "registration";
     src: url("/src/assets/registration.ttf");
 }
 
+/* Component-based BEM naming convention */
 .registration {
     background:#FFCD00;
     text-align: center;
@@ -37,4 +39,9 @@
 .search__result > .registration {
     font-size: 48px;
     border-radius: 6px;
+}
+
+.search__toolbar {
+    min-width: 256px;
+    max-width: 256px;
 }
