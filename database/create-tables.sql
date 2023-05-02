@@ -13,6 +13,7 @@ CREATE TABLE registration
 CREATE TABLE listing
 (
     price_pence  integer                NOT NULL,
+    date_listed  date                   NOT NULL,
     registration character varying(255) NOT NULL
 );
 

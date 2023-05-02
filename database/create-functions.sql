@@ -1,3 +1,23 @@
+CREATE OR REPLACE FUNCTION random_price() RETURNS INTEGER AS
+$$
+DECLARE
+    result INTEGER;
+BEGIN
+    result := floor(random() * (1000)) * 100::int;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION random_date() RETURNS DATE AS
+$$
+DECLARE
+    result DATE;
+BEGIN
+    result := now() + (random() * (interval '90 days')) + '30 days';
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION random_current_registration() RETURNS VARCHAR AS
 $$
 DECLARE
@@ -54,12 +74,12 @@ DECLARE
     new_price_pence  INTEGER;
 BEGIN
     new_registration := random_current_registration();
-    new_price_pence := floor(random() * (1000)) * 100::int;
+    new_price_pence := random_price();
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Current')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration, price_pence)
-    VALUES (new_registration, new_price_pence)
+    INSERT INTO listing (registration, price_pence, date_listed)
+    VALUES (new_registration, new_price_pence, random_date())
     ON CONFLICT DO NOTHING;
 END;
 $$
@@ -73,12 +93,12 @@ DECLARE
     new_price_pence  INTEGER;
 BEGIN
     new_registration := random_prefix_registration();
-    new_price_pence := floor(random() * 10 + 1)::int;
+    new_price_pence := random_price();
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Prefix')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration, price_pence)
-    VALUES (new_registration, new_price_pence)
+    INSERT INTO listing (registration, price_pence, date_listed)
+    VALUES (new_registration, new_price_pence, random_date())
     ON CONFLICT DO NOTHING;
 END;
 $$
@@ -92,12 +112,12 @@ DECLARE
     new_price_pence  INTEGER;
 BEGIN
     new_registration := random_suffix_registration();
-    new_price_pence := floor(random() * 10 + 1)::int;
+    new_price_pence := random_price();
     INSERT INTO registration (registration, style)
     VALUES (new_registration, 'Suffix')
     ON CONFLICT DO NOTHING;
-    INSERT INTO listing (registration, price_pence)
-    VALUES (new_registration, new_price_pence)
+    INSERT INTO listing (registration, price_pence, date_listed)
+    VALUES (new_registration, new_price_pence, random_date())
     ON CONFLICT DO NOTHING;
 END;
 $$

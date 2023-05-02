@@ -20,6 +20,10 @@ public interface ListingRepository extends Repository<Listing, String> {
     @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration)", nativeQuery = true)
     Page<Listing> similar(@Param("target") String target, Pageable pageable);
 
+    @SuppressWarnings("unused")
+    @Query(value = "SELECT * FROM listing ORDER BY date_listed DESC", nativeQuery = true)
+    Page<Listing> newest(Pageable pageable);
+
     @RestResource(exported = false)
     Optional<Listing> findById(String registration);
 

@@ -3,6 +3,7 @@ import React from "react";
 export interface SearchResultData {
     registration: String;
     pricePence: number;
+    dateListed: String;
 }
 
 interface Props {

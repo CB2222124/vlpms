@@ -8,12 +8,13 @@ function SearchPageComponent() {
     const [data, setData] = useState<SearchResultData[]>([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/listing/search/similar', {params: {size: 20}})
+        axios.get('http://localhost:8080/listing/search/newest', {params: {size: 20}})
             .then(response => {
                 setData(response.data._embedded.listing.map((listing: any) => {
                     return {
                         registration: listing.id,
-                        pricePence: listing.pricePence
+                        pricePence: listing.pricePence,
+                        dateListed: listing.dateListed
                     }
                 }));
             })

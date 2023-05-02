@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
@@ -24,5 +26,7 @@ public class Listing {
     private Registration registration;
 
     private int pricePence;
+
+    private LocalDate dateListed;
 
 }
