@@ -48,14 +48,13 @@ function SearchPageComponent() {
     }
 
     useEffect(() => {
-        const {state} = location;
-        if(state != undefined){
-            const {search} = state;
-            performSearch({sort: "", style: "", page: 0, similar: search});
-        } else {
-            performSearch(searchData);
+        let data: SearchData = searchData;
+        if (location.state) {
+            data = {sort: "", style: "", page: 0, similar: location.state.search};
+            setSearchData(data);
         }
-    }, [location]);
+        performSearch(data);
+    }, []);
 
     return (
         <div className="d-flex ms-2 mt-2">
