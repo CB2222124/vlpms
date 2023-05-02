@@ -8,7 +8,7 @@ function SearchPageComponent() {
     const [data, setData] = useState<SearchResultData[]>([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/listing/search/newest', {params: {size: 20}})
+        axios.get('http://localhost:8080/listing?page=0&size=20&sort=dateListed%2Cdesc', {params: {size: 20}})
             .then(response => {
                 setData(response.data._embedded.listing.map((listing: any) => {
                     return {

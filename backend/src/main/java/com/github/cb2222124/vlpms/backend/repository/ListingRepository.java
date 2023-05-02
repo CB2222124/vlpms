@@ -4,7 +4,7 @@ import com.github.cb2222124.vlpms.backend.model.Listing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -14,15 +14,11 @@ import java.util.Optional;
 
 @RepositoryRestResource(collectionResourceRel = "listing", path = "listing")
 @CrossOrigin(origins = "http://localhost:9001")
-public interface ListingRepository extends Repository<Listing, String> {
+public interface ListingRepository extends ListPagingAndSortingRepository<Listing, String> {
 
     @SuppressWarnings("unused")
     @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration)", nativeQuery = true)
     Page<Listing> similar(@Param("target") String target, Pageable pageable);
-
-    @SuppressWarnings("unused")
-    @Query(value = "SELECT * FROM listing ORDER BY date_listed DESC", nativeQuery = true)
-    Page<Listing> newest(Pageable pageable);
 
     @RestResource(exported = false)
     Optional<Listing> findById(String registration);
