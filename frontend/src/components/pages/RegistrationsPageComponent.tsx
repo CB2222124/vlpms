@@ -18,7 +18,7 @@ function RegistrationsPageComponent() {
         if(userContext?.user?.id) findRegistrations(userContext.user.id);
     }, [userContext]);
 
-    if (!userContext?.user) return (<Container><span><i>Login to view owned registrations.</i></span></Container>);
+    if (!userContext?.user) return (<Container><span><i>Login to view your registrations.</i></span></Container>);
 
     const findRegistrations = (id: number) => {
         axios.get(`http://localhost:8080/customer/${id}/registrations`)
