@@ -9,6 +9,7 @@ import com.github.cb2222124.vlpms.backend.model.Registration;
 import com.github.cb2222124.vlpms.backend.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,24 +26,25 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Long> register(CustomerLoginRequest request) {
+    public ResponseEntity<Long> register(@RequestBody @Validated CustomerLoginRequest request) {
         Customer customer = customerService.register(request.username());
         return ResponseEntity.ok(customer.getId());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(CustomerLoginRequest request) {
+    public ResponseEntity<Long> login(@RequestBody @Validated CustomerLoginRequest request) {
         Customer customer = customerService.login(request.username());
         return ResponseEntity.ok(customer.getId());
     }
 
     @PostMapping("/wishlist")
-    public ResponseEntity<Listing> addWishlist(CustomerWishlistRequest request) {
+    public ResponseEntity<Listing> addWishlist(@RequestBody @Validated CustomerWishlistRequest request) {
+        System.out.println(request.customerId());
         return ResponseEntity.ok(customerService.addListingToCustomerWishlist(request.customerId(), request.registration()));
     }
 
     @DeleteMapping("/wishlist")
-    public ResponseEntity<Object> removeWishlist(CustomerWishlistRequest request) {
+    public ResponseEntity<Object> removeWishlist(@RequestBody @Validated CustomerWishlistRequest request) {
         customerService.removeListingFromCustomerWishlist(request.customerId(), request.registration());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

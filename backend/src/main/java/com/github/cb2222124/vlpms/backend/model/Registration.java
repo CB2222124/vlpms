@@ -23,7 +23,7 @@ public class Registration {
     private String style;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "registration", orphanRemoval = true)
     private Listing listing;
 
     public Registration(String registration, String style) {

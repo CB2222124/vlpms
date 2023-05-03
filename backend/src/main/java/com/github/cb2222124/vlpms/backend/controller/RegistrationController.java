@@ -39,12 +39,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/createAndList")
-    public ResponseEntity<Listing> list(NewListingRequest listingDTO) {
+    public ResponseEntity<Listing> list(@RequestBody @Validated NewListingRequest listingDTO) {
         return ResponseEntity.ok(listingService.createAndListRegistration(listingDTO.registration(), listingDTO.pricePence()));
     }
 
     @PostMapping("/assignListing")
-    public ResponseEntity<Registration> addRegistration(CustomerRegistrationRequest request) {
+    public ResponseEntity<Registration> addRegistration(@RequestBody @Validated CustomerRegistrationRequest request) {
         return ResponseEntity.ok(registrationService.transferListingToCustomer(request.customerId(), request.registration()));
     }
 
