@@ -23,7 +23,6 @@ function RegistrationsPageComponent() {
     const findRegistrations = (id: number) => {
         axios.get(`http://localhost:8080/customer/${id}/registrations`)
             .then(response => {
-                console.log(response.data);
                 setRegistrations(response.data.map((registration: any) => {
                     return {
                         registration: registration.registration,
