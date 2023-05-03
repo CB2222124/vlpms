@@ -7,9 +7,12 @@ import SearchResultComponent from "../search/SearchResultComponent";
 import WishlistItemComponent from "../wishlist/WishlistItemComponent";
 
 export interface Listing {
-    registration: string;
+    registration: {
+        registration: string;
+        style: string;
+    };
     pricePence: number;
-    dateListed: string;
+    dateListed: String;
 }
 
 function WishlistPageComponent() {
@@ -29,7 +32,7 @@ function WishlistPageComponent() {
             .then(response => {
                 setListings(response.data.map((listing: any) => {
                     return {
-                        registration: listing.id,
+                        registration: listing.registration,
                         pricePence: listing.pricePence,
                         dateListed: listing.dateListed
                     }
@@ -44,6 +47,7 @@ function WishlistPageComponent() {
                 <thead>
                 <tr>
                     <th>Registration</th>
+                    <th>Style</th>
                     <th>Price</th>
                     <th>Date Listed</th>
                     <th>Action</th>

@@ -12,7 +12,10 @@ export interface SearchData {
 }
 
 export interface SearchResultData {
-    registration: String;
+    registration: {
+        registration: string;
+        style: string;
+    };
     pricePence: number;
     dateListed: String;
 }
@@ -38,7 +41,7 @@ function SearchPageComponent() {
             .then(response => {
                 setSearchResultData(response.data._embedded.listing.map((listing: any) => {
                     return {
-                        registration: listing.id,
+                        registration: listing.registration,
                         pricePence: listing.pricePence,
                         dateListed: listing.dateListed
                     }

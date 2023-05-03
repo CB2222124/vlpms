@@ -11,7 +11,8 @@ function WishlistItemComponent(props: Props) {
     const listing = props.listing;
     return (
         <>
-            <td className="registration" style={{fontSize: "24px"}}>{listing.registration}</td>
+            <td className="registration" style={{fontSize: "24px"}}>{listing.registration.registration}</td>
+            <td>{listing.registration.style}</td>
             <td>{"£" + listing.pricePence / 100}</td>
             <td>{listing.dateListed}</td>
             <td><Button variant="danger">Remove</Button></td>

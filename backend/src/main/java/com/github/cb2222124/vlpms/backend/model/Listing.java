@@ -2,6 +2,7 @@ package com.github.cb2222124.vlpms.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,11 @@ import java.time.LocalDate;
 @Setter
 public class Listing {
 
+    @JsonBackReference
     @Id
     private String id;
 
-    @JsonBackReference
+    @JsonManagedReference
     @MapsId
     @JoinColumn(name = "registration")
     @OneToOne(fetch = FetchType.LAZY)
