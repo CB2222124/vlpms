@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Registration entity.
+ */
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
@@ -16,11 +19,20 @@ import lombok.Setter;
 @Setter
 public class Registration {
 
+    /**
+     * Vehicle registration is used as the unique identifier.
+     */
     @Id
     private String registration;
 
     private String style;
 
+    /**
+     * Each registration may be listed once. JsonBackReference is used to omit this field from serialisation
+     * and avoid cyclic dependencies when querying a listing or registration.
+     * The orphanRemoval property of the OneToOne relationship ensures that if a registration is removed then any
+     * associated listing is removed as well.
+     */
     @JsonBackReference
     @OneToOne(mappedBy = "registration", orphanRemoval = true)
     private Listing listing;

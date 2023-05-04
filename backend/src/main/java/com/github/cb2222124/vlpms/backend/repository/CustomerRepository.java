@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * Customer repository used for internal operations. Not mapped.
+ */
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByUsernameIgnoreCase(String username);
 }

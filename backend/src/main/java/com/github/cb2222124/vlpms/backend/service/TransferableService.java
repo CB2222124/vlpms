@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+/**
+ * Transferable service used to calculate whether a registration can be applied to a specific vehicle,
+ * determined by the age indicated by the registration.
+ */
 @Service
 public class TransferableService {
 
@@ -17,27 +21,50 @@ public class TransferableService {
         this.registrationRepository = registrationRepository;
     }
 
+    /**
+     * Checks if a new registration can be applied to a vehicle manufactured in a given year.
+     * Resource used for logic: <a href="https://www.theaa.com/car-buying/number-plates">...</a>
+     *
+     * @param inputRegistration Registration.
+     * @param year              Target vehicle's year of manufacture.
+     * @return True if transferable, false otherwise.
+     */
     public boolean transferable(String inputRegistration, int year) {
         Registration registration = registrationRepository.findById(inputRegistration).orElseThrow(() -> {
             throw new TransferableException(HttpStatus.NOT_FOUND, "Provided registration does not exist");
         });
         return switch (registration.getStyle()) {
-            case "Current" -> currentRegNewerThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
-            case "Prefix" -> prefixRegNewerThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
-            case "Suffix" -> suffixRegNewerThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
+            case "Current" ->
+                    currentStyleRegOlderThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
+            case "Prefix" -> prefixStyleRegOlderThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
+            case "Suffix" -> suffixStyleRegOlderThanDate(registration.getRegistration(), LocalDate.ofYearDay(year, 1));
             default -> throw new TransferableException(HttpStatus.BAD_REQUEST,
                     "Provided registration style cannot be checked with this service");
         };
     }
 
-    private boolean currentRegNewerThanDate(String registration, LocalDate date) {
+    /**
+     * Checks a current style registration for representing a date older than the one specified.
+     *
+     * @param registration Registration.
+     * @param date         Date
+     * @return True if represents an older date, false otherwise.
+     */
+    private boolean currentStyleRegOlderThanDate(String registration, LocalDate date) {
         int identifier = Integer.parseInt(registration.substring(2, 4));
         if (identifier > 50) identifier -= 50;
         int year = 2000 + identifier;
         return date.isAfter(LocalDate.ofYearDay(year, 1));
     }
 
-    private boolean prefixRegNewerThanDate(String registration, LocalDate date) {
+    /**
+     * Checks a prefix style registration for representing a date older than the one specified.
+     *
+     * @param registration Registration.
+     * @param date         Date
+     * @return True if represents an older date, false otherwise.
+     */
+    private boolean prefixStyleRegOlderThanDate(String registration, LocalDate date) {
         int year = switch (registration.charAt(0)) {
             case 'A' -> 1983;
             case 'B' -> 1984;
@@ -64,7 +91,14 @@ public class TransferableService {
         return date.isAfter(LocalDate.ofYearDay(year, 1));
     }
 
-    private boolean suffixRegNewerThanDate(String registration, LocalDate date) {
+    /**
+     * Checks a suffix style registration for representing a date older than the one specified.
+     *
+     * @param registration Registration.
+     * @param date         Date
+     * @return True if represents an older date, false otherwise.
+     */
+    private boolean suffixStyleRegOlderThanDate(String registration, LocalDate date) {
         int year = switch (registration.charAt(registration.length() - 1)) {
             case 'A' -> 1963;
             case 'B' -> 1964;

@@ -1,6 +1,9 @@
 package com.github.cb2222124.vlpms.backend.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
-public record CustomerLoginRequest(@NotEmpty String username) {
+/**
+ * @param username Customer username (Present and not empty).
+ */
+public record CustomerLoginRequest(@NotBlank String username) {
 }

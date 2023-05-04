@@ -13,6 +13,12 @@ import java.util.Map;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
+    /**
+     * Controller advice to provide a more controlled response for validation errors for bad user input.
+     *
+     * @param ex Exception.
+     * @return Response.
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)

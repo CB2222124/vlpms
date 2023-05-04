@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Customer service used to handle customer related business logic.
+ */
 @Service
 public class CustomerService {
 
@@ -28,6 +31,13 @@ public class CustomerService {
         this.listingRepository = listingRepository;
     }
 
+    /**
+     * Registers a customer with the provided username, given it is not already in use. In a deployed application
+     * there would be more registration parameters.
+     *
+     * @param username The desired username.
+     * @return The new customers ID.
+     */
     @Transactional
     public Customer register(String username) {
         if (customerRepository.findByUsernameIgnoreCase(username).isPresent()) {
@@ -39,12 +49,26 @@ public class CustomerService {
         return customer;
     }
 
+    /**
+     * Provides the ID of a customer associated with the provided username, given it exists. In a deployed application
+     * this would instead be a session ID or authentication token (JWT etc).
+     *
+     * @param username Username.
+     * @return The customers ID.
+     */
     public Customer login(String username) {
         return customerRepository.findByUsernameIgnoreCase(username).orElseThrow(() -> {
             throw new CustomerException(HttpStatus.NOT_FOUND, "Provided username is not associated with a customer");
         });
     }
 
+    /**
+     * Adds the provided listing to a customers wishlist, provided the listing exists and is not already wishlisted.
+     *
+     * @param id           Customer ID.
+     * @param registration Listing registration.
+     * @return The listing added.
+     */
     @Transactional
     public Listing addListingToCustomerWishlist(Long id, String registration) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
@@ -61,6 +85,13 @@ public class CustomerService {
         return listing;
     }
 
+    /**
+     * Removes the provided listing from a customers wishlist, provided the listing exists and is wishlisted.
+     *
+     * @param id           Customer ID.
+     * @param registration Listing registration.
+     * @return The modified wishlist.
+     */
     @Transactional
     public List<Listing> removeListingFromCustomerWishlist(Long id, String registration) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
@@ -76,6 +107,12 @@ public class CustomerService {
         return wishlist(id);
     }
 
+    /**
+     * Gets the wishlist for a given customer.
+     *
+     * @param id Customer ID.
+     * @return Wishlist.
+     */
     @Transactional
     public List<Listing> wishlist(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
@@ -86,6 +123,12 @@ public class CustomerService {
         return listings;
     }
 
+    /**
+     * Gets the owned registrations for a given customer.
+     *
+     * @param id Customer ID.
+     * @return List of registrations.
+     */
     @Transactional
     public List<Registration> registrations(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {

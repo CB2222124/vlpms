@@ -6,6 +6,11 @@ import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+/**
+ * Configuration for rest repositories used to change the classpath scanning strategy such that repository
+ * methods are not exposed by default and require explicit annotation. Useful in this application as most
+ * exposed mappings are handled by controllers.
+ */
 @Configuration
 public class RepositoryConfig implements RepositoryRestConfigurer {
     @Override

@@ -13,14 +13,30 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Listing repository used to query listings.
+ */
 @RepositoryRestResource(collectionResourceRel = "listing", path = "listing")
 @CrossOrigin(origins = "http://localhost:9001")
 public interface ListingRepository extends ListPagingAndSortingRepository<Listing, String> {
 
-    @SuppressWarnings("unused")
+    /**
+     * Allows listings to be queried by similarity, using the levenshtein Postgres library function. This
+     * would be more appropriately achieved using Hibernate Search to avoid using native queries.
+     *
+     * @param target The input to match registrations against.
+     * @return Page of listings sorted by similarity.
+     */
+    @SuppressWarnings({"unused", "SqlSignature"})
     @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration)", nativeQuery = true)
     Page<Listing> findBySimilarity(@Param("target") String target, Pageable pageable);
 
+    /**
+     * Allows listed registrations to be queried by a specific set of styles.
+     *
+     * @param styles The styles that should be allowed.
+     * @return Page of listings.
+     */
     @SuppressWarnings("unused")
     Page<Listing> findByRegistrationStyleIn(Collection<String> styles, Pageable pageable);
 

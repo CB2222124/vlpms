@@ -1,16 +1,13 @@
 package com.github.cb2222124.vlpms.backend.controller;
 
 import com.github.cb2222124.vlpms.backend.dto.request.CustomerRegistrationRequest;
-import com.github.cb2222124.vlpms.backend.dto.request.NewListingRequest;
 import com.github.cb2222124.vlpms.backend.dto.response.TransferableResponse;
 import com.github.cb2222124.vlpms.backend.dto.response.VesResponse;
 import com.github.cb2222124.vlpms.backend.exception.ListingException;
 import com.github.cb2222124.vlpms.backend.exception.TransferableException;
 import com.github.cb2222124.vlpms.backend.exception.VesException;
-import com.github.cb2222124.vlpms.backend.model.Listing;
 import com.github.cb2222124.vlpms.backend.model.Registration;
 import com.github.cb2222124.vlpms.backend.service.ListingService;
-import com.github.cb2222124.vlpms.backend.service.RegistrationService;
 import com.github.cb2222124.vlpms.backend.service.TransferableService;
 import com.github.cb2222124.vlpms.backend.service.VesService;
 import com.github.cb2222124.vlpms.backend.util.RegistrationRegex;
@@ -20,39 +17,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller used to map registration operations.
+ */
 @RestController
-@Validated
 @RequestMapping("/registration")
 @CrossOrigin(origins = "http://localhost:9001")
 public class RegistrationController {
 
     private final ListingService listingService;
-    private final RegistrationService registrationService;
     private final TransferableService transferableService;
     private final VesService vesService;
 
-    public RegistrationController(ListingService listingService, RegistrationService registrationService, TransferableService transferableService, VesService vesService) {
+    public RegistrationController(ListingService listingService, TransferableService transferableService, VesService vesService) {
         this.listingService = listingService;
-        this.registrationService = registrationService;
         this.transferableService = transferableService;
         this.vesService = vesService;
     }
 
-    @PostMapping("/createAndList")
-    public ResponseEntity<Listing> list(@RequestBody @Validated NewListingRequest listingDTO) {
-        return ResponseEntity.ok(listingService.createAndListRegistration(listingDTO.registration(), listingDTO.pricePence()));
-    }
-
+    /**
+     * Assigns a listed registration to a customer. This operation removes it's associated listing and subsequently
+     * from every customer's wishlist.
+     *
+     * @param request Request body containing listing and target customer.
+     * @return The modified registration.
+     */
     @PostMapping("/assignListing")
     public ResponseEntity<Registration> addRegistration(@RequestBody @Validated CustomerRegistrationRequest request) {
-        return ResponseEntity.ok(registrationService.transferListingToCustomer(request.customerId(), request.registration()));
+        return ResponseEntity.ok(listingService.transferListingToCustomer(request.customerId(), request.registration()));
     }
 
-    @ExceptionHandler(ListingException.class)
-    public ResponseEntity<ListingException> handleListingException(ListingException ex) {
-        return ResponseEntity.status(ex.getStatusCode()).body(ex);
-    }
-
+    /**
+     * Checks if a registration held in the database is able to be assigned to a real-world vehicle,
+     * queried by current registration using a DVLA service.
+     *
+     * @param registration       The registration.
+     * @param targetRegistration The target vehicle registration.
+     * @return Ok response containing True if it is transferable, False otherwise.
+     */
     @GetMapping("/transferable")
     public ResponseEntity<TransferableResponse> transferable(
             @RequestParam @NotBlank @Pattern(regexp = RegistrationRegex.ALL) String registration,
@@ -64,12 +66,35 @@ public class RegistrationController {
                 "Registrations cannot indicate that a vehicle is younger than its year of manufacture"));
     }
 
+    /**
+     * Handles listing exceptions.
+     *
+     * @param ex Listing related exception.
+     * @return Response entity wrapping the exception.
+     */
+    @ExceptionHandler(ListingException.class)
+    public ResponseEntity<ListingException> handleListingException(ListingException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex);
+    }
+
+    /**
+     * Handles VES exceptions.
+     *
+     * @param ex VES related exception.
+     * @return Response entity wrapping the exception.
+     */
     @ExceptionHandler(VesException.class)
     public ResponseEntity<TransferableResponse> handleVesException(VesException ex) {
         TransferableResponse transferableResponse = new TransferableResponse(ex.getStatusCode().value(), ex.getMessage());
         return ResponseEntity.status(ex.getStatusCode()).body(transferableResponse);
     }
 
+    /**
+     * Handles transferable exceptions.
+     *
+     * @param ex Transferable related exception.
+     * @return Response entity wrapping the exception.
+     */
     @ExceptionHandler(TransferableException.class)
     public ResponseEntity<TransferableResponse> handleTransferableException(TransferableException ex) {
         TransferableResponse transferableResponse = new TransferableResponse(ex.getStatusCode().value(), ex.getMessage());

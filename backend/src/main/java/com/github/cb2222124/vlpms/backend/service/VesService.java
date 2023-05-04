@@ -13,16 +13,18 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * VES service used to query the DVLA VES service.
+ */
 @Service
 public class VesService {
-
-    //TODO: Provide these fields as env variables or args.
-    private final String URI = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles";
-    private final String KEY = "";
 
     private final WebClient webClient;
 
     public VesService() {
+        //TODO: Provide these fields as env variables or args.
+        String KEY = "";
+        String URI = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles";
         webClient = WebClient.builder()
                 .baseUrl(URI)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
@@ -31,6 +33,12 @@ public class VesService {
                 .build();
     }
 
+    /**
+     * Queries the VES service using WebClient and maps the response to a DTO representing the useful data.
+     *
+     * @param registration Registration to query.
+     * @return DTO containing useful information.
+     */
     public VesResponse queryRegistration(String registration) {
         String request = new JSONObject().appendField("registrationNumber", registration).toJSONString();
         return webClient.post()
