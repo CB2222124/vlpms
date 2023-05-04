@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RepositoryRestResource(collectionResourceRel = "listing", path = "listing")
@@ -18,7 +19,10 @@ public interface ListingRepository extends ListPagingAndSortingRepository<Listin
 
     @SuppressWarnings("unused")
     @Query(value = "SELECT * FROM listing ORDER BY levenshtein(:target, registration)", nativeQuery = true)
-    Page<Listing> similar(@Param("target") String target, Pageable pageable);
+    Page<Listing> findBySimilarity(@Param("target") String target, Pageable pageable);
+
+    @SuppressWarnings("unused")
+    Page<Listing> findByRegistrationStyleIn(Collection<String> styles, Pageable pageable);
 
     @RestResource(exported = false)
     Optional<Listing> findById(String registration);

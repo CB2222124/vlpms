@@ -19,6 +19,9 @@ function SearchToolbarComponent(props: Props) {
         const target = event.target as HTMLInputElement;
         if (target.name == "sort") { //If we are switching sorts...
             setSearchData({...searchData, sort: target.value, similar: ""}); //Let's clear the conditional input field.
+            if (target.value == "") { //If we are sorting by similar...
+                setSearchData({...searchData, style: "", sort: target.value,}); //Let's make style filter all.
+            }
         } else {
             setSearchData({...searchData, [target.name]: target.value});
         }
@@ -34,7 +37,8 @@ function SearchToolbarComponent(props: Props) {
             <form onSubmit={handleSubmit}>
                 <div className="mb-2">
                     <label>Style</label>
-                    <select className="form-select" name="style" value={searchData.style} onChange={handleChange}>
+                    <select className="form-select" name="style" value={searchData.style} onChange={handleChange}
+                            disabled={searchData.sort == ""}>
                         <option value="">All</option>
                         <option value="Current">Current</option>
                         <option value="Prefix">Prefix</option>

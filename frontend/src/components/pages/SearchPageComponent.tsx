@@ -34,10 +34,8 @@ function SearchPageComponent() {
     const location = useLocation();
 
     const performSearch = (data: SearchData) => {
-        const similar: string = data.similar.toUpperCase().trim();
-        axios.get(similar == ""
-            ? `http://localhost:8080/listing?page=${data.page}&size=20&sort=${data.sort}`
-            : `http://localhost:8080/listing/search/similar?target=${similar}&page=${data.page}&size=20`)
+        const url: string = constructSearchUrl(data);
+        axios.get(url)
             .then(response => {
                 setSearchResultData(response.data._embedded.listing.map((listing: any) => {
                     return {
@@ -48,6 +46,13 @@ function SearchPageComponent() {
                 }));
             })
             .catch(error => console.log(error))
+    }
+
+    const constructSearchUrl = (data: SearchData): string => {
+        const similar: string = data.similar.toUpperCase().trim();
+        if(similar != "") return `http://localhost:8080/listing/search/findBySimilarity?target=${similar}&page=${data.page}&size=20`;
+        if(data.style != "") return `http://localhost:8080/listing/search/findByRegistrationStyleIn?styles=${data.style}&page=${data.page}&size=20&sort=${data.sort}`;
+        return `http://localhost:8080/listing?page=${data.page}&size=20&sort=${data.sort}`;
     }
 
     useEffect(() => {
