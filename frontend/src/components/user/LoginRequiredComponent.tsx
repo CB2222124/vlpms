@@ -1,23 +1,31 @@
 import React from "react";
 import {Button, Modal} from "react-bootstrap";
 
-function LoginRequiredComponent() {
+interface Props {
+    show: boolean; //Should modal be visible.
+    close: () => void; //Function to close modal.
+}
+
+/**
+ * Utility notification modal used to provide a login prompt message.
+ */
+function LoginRequiredComponent(props: Props) {
+
+    const show: boolean = props.show;
+    const close: () => void = props.close;
 
     return (
-        <Modal.Dialog>
+        <Modal show={show} onHide={close}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal title</Modal.Title>
+                <Modal.Title>Login Required</Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
-                <p>Modal body text goes here.</p>
+                <p>Login to perform this action.</p>
             </Modal.Body>
-
             <Modal.Footer>
-                <Button variant="secondary">Close</Button>
-                <Button variant="primary">Save changes</Button>
+                <Button variant="primary" onClick={close}>Ok</Button>
             </Modal.Footer>
-        </Modal.Dialog>
+        </Modal>
     )
 }
 

@@ -4,10 +4,9 @@ import axios from "axios";
 import {UserContext} from "./UserContextComponent";
 
 /**
- * Opens a form within a modal that allows the user to register.
- * The backend application is called and if the request is valid, global user context is updated,
+ * Opens a validated form within a modal that allows the user to register.
+ * The backend service is called and if the request is valid, global user context is updated,
  * otherwise an appropriate error message is produced.
- * @constructor
  */
 function RegisterComponent() {
 
@@ -30,11 +29,15 @@ function RegisterComponent() {
         setUsername(event.target.value);
     }
 
+    /**
+     * Calls the backend service and updates user context or sets error messages.
+     * @param event Form submit event.
+     */
     function register(event: any) {
         event.preventDefault();
         axios.post("http://localhost:8080/customer/register", {
-                username: username
-            })
+            username: username
+        })
             .then(response => {
                 const id = response.data as number;
                 if (userContext?.setUser) {

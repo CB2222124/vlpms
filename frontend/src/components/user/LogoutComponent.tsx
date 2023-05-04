@@ -3,13 +3,15 @@ import {UserContext} from "./UserContextComponent";
 import {Button} from "react-bootstrap";
 
 /**
- * Sets the user to undefined when clicked provided user context setter is available.
- * @constructor
+ * Button wrapper component used to set the user to undefined when clicked provided user context setter is available.
  */
 function LogoutComponent() {
 
     const userContext = useContext(UserContext);
 
+    /**
+     * Sets the user to undefined provided user context setter is available.
+     */
     function logout() {
         if (userContext?.setUser) {
             userContext.setUser(undefined);

@@ -2,12 +2,16 @@ import React, {SyntheticEvent} from "react";
 import {SearchData} from "../pages/SearchPageComponent";
 
 interface Props {
-    performSearch(data: SearchData): void;
+    performSearch(data: SearchData): void; //Function used to call the backend service, handled by SearchPageComponent.
 
-    searchData: SearchData;
-    setSearchData: React.Dispatch<React.SetStateAction<SearchData>>;
+    searchData: SearchData; //Search data.
+    setSearchData: React.Dispatch<React.SetStateAction<SearchData>>; //Search data setter.
 }
 
+/**
+ * Component responsible for allowing the user to specify different listing search parameters. Inputs are validated
+ * where appropriate.
+ */
 function SearchToolbarComponent(props: Props) {
 
     const searchData = props.searchData;
@@ -15,6 +19,10 @@ function SearchToolbarComponent(props: Props) {
 
     const performSearch = props.performSearch;
 
+    /**
+     * Handles input changes and modifies toolbar state if appropriate.
+     * @param event Input change event.
+     */
     const handleChange = (event: SyntheticEvent) => {
         const target = event.target as HTMLInputElement;
         if (target.name == "sort") { //If we are switching sorts...

@@ -6,10 +6,16 @@ import LoginComponent from "../user/LoginComponent";
 import RegisterComponent from "../user/RegisterComponent";
 import LogoutComponent from "../user/LogoutComponent";
 
+/**
+ * Navigation bar present at the top of the screen above all pages. Links to relevant page components.
+ */
 function NavbarComponent() {
 
     const userContext = useContext(UserContext);
 
+    /**
+     * Conditional components based on if user data is available (AKA is the user logged in).
+     */
     function userNavComponents() {
         if (userContext?.user) return (<LogoutComponent/>)
         return (<div>

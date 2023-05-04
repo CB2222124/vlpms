@@ -6,7 +6,7 @@
 
 /* Component-based BEM naming convention */
 .registration {
-    background:#FFCD00;
+    background: #FFCD00;
     text-align: center;
     font-family: registration, helvetica, ariel, sans-serif;
 }
@@ -41,7 +41,21 @@
     border-radius: 6px;
 }
 
+.search__result > button {
+    all: unset;
+    cursor: pointer;
+}
+
 .search__toolbar {
     min-width: 256px;
     max-width: 256px;
+}
+
+.purchase {
+    font-family: registration, helvetica, ariel, sans-serif;
+}
+
+.registrations__column {
+    text-align: left;
+    width: 240px;
 }

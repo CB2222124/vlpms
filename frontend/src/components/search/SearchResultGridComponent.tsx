@@ -3,9 +3,12 @@ import SearchResultComponent from "./SearchResultComponent";
 import {SearchResultData} from "../pages/SearchPageComponent";
 
 interface Props {
-    searchResultList: SearchResultData[];
+    searchResultList: SearchResultData[]; //List of listings.
 }
 
+/**
+ * Component responsible for displaying a list of listings in grid format, or no results text if appropriate.
+ */
 function SearchResultGridComponent(props: Props) {
 
     const searchResultList = props.searchResultList;
@@ -16,7 +19,7 @@ function SearchResultGridComponent(props: Props) {
         <>
             <div className="d-flex flex-wrap">
                 {searchResultList.map((searchResult: SearchResultData, index) => {
-                    return (<div key = {index}><SearchResultComponent searchResultData={searchResult}/></div>);
+                    return (<div key={index}><SearchResultComponent searchResultData={searchResult}/></div>);
                 })}
             </div>
         </>

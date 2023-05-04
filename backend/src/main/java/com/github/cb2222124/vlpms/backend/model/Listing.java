@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -30,5 +31,16 @@ public class Listing {
     private int pricePence;
 
     private LocalDate dateListed;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "wishlistedListings")
+    private List<Customer> customers;
+
+    @PreRemove
+    private void removeWishlistReferences() {
+        for (Customer customer : customers) {
+            customer.getWishlistedListings().remove(this);
+        }
+    }
 
 }

@@ -6,6 +6,10 @@ import UserContextComponent from "./components/user/UserContextComponent";
 import RegistrationsPageComponent from "./components/pages/RegistrationsPageComponent";
 import WishlistPageComponent from "./components/pages/WishlistPageComponent";
 
+/**
+ * Root application component. Provides application routes with a navbar above them,
+ * wrapped in user context (See UserContextComponent).
+ */
 function App() {
 
     return (

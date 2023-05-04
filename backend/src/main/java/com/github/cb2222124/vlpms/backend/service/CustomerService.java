@@ -62,7 +62,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void removeListingFromCustomerWishlist(Long id, String registration) {
+    public List<Listing> removeListingFromCustomerWishlist(Long id, String registration) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
             throw new CustomerException(HttpStatus.NOT_FOUND, "Provided ID is not associated with a customer");
         });
@@ -73,6 +73,7 @@ public class CustomerService {
             throw new ListingException(HttpStatus.BAD_REQUEST, "Provided registration is not wishlisted by the provided customer");
         }
         customerRepository.save(customer);
+        return wishlist(id);
     }
 
     @Transactional

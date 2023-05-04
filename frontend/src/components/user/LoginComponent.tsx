@@ -4,10 +4,9 @@ import axios from "axios";
 import {UserContext} from "./UserContextComponent";
 
 /**
- * Opens a form within a modal that allows the user to enter their username and password.
- * The backend application is called and if the request is valid, global user context is updated,
+ * Opens a form within a modal that allows the user to enter their (validated) username and password.
+ * The backend service is called and if the request is valid, global user context is updated,
  * otherwise an error message is produced.
- * @constructor
  */
 function LoginComponent() {
 
@@ -32,14 +31,14 @@ function LoginComponent() {
     /**
      * Calls the backend application with the provided username. If it is valid the customer ID will be returned.
      * In practice this should be a session token after authentication.
-     * The global user context is updated to store the current
-     * @param event
+     * The global user context is updated to store the current user.
+     * @param event Form submit event.
      */
     function login(event: any) {
         event.preventDefault();
         axios.post("http://localhost:8080/customer/login", {
-                username: username
-            })
+            username: username
+        })
             .then(response => {
                 const id = response.data as number;
                 if (userContext?.setUser) {

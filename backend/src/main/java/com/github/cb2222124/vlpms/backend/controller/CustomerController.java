@@ -3,11 +3,14 @@ package com.github.cb2222124.vlpms.backend.controller;
 import com.github.cb2222124.vlpms.backend.dto.request.CustomerLoginRequest;
 import com.github.cb2222124.vlpms.backend.dto.request.CustomerWishlistRequest;
 import com.github.cb2222124.vlpms.backend.exception.CustomerException;
+import com.github.cb2222124.vlpms.backend.exception.ListingException;
 import com.github.cb2222124.vlpms.backend.model.Customer;
 import com.github.cb2222124.vlpms.backend.model.Listing;
 import com.github.cb2222124.vlpms.backend.model.Registration;
 import com.github.cb2222124.vlpms.backend.service.CustomerService;
-import org.springframework.http.HttpStatus;
+import com.github.cb2222124.vlpms.backend.util.RegistrationRegex;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,14 +42,14 @@ public class CustomerController {
 
     @PostMapping("/wishlist")
     public ResponseEntity<Listing> addWishlist(@RequestBody @Validated CustomerWishlistRequest request) {
-        System.out.println(request.customerId());
         return ResponseEntity.ok(customerService.addListingToCustomerWishlist(request.customerId(), request.registration()));
     }
 
     @DeleteMapping("/wishlist")
-    public ResponseEntity<Object> removeWishlist(@RequestBody @Validated CustomerWishlistRequest request) {
-        customerService.removeListingFromCustomerWishlist(request.customerId(), request.registration());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<List<Listing>> removeWishlist(
+            @RequestParam Long id,
+            @RequestParam @NotBlank @Pattern(regexp = RegistrationRegex.ALL) String registration) {
+        return ResponseEntity.ok(customerService.removeListingFromCustomerWishlist(id, registration));
     }
 
     @GetMapping("{id}/wishlist")
@@ -60,7 +63,12 @@ public class CustomerController {
     }
 
     @ExceptionHandler(CustomerException.class)
-    public ResponseEntity<CustomerException> handleListingException(CustomerException ex) {
+    public ResponseEntity<CustomerException> handleCustomerException(CustomerException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex);
+    }
+
+    @ExceptionHandler(ListingException.class)
+    public ResponseEntity<ListingException> handleListingException(ListingException ex) {
         return ResponseEntity.status(ex.getStatusCode()).body(ex);
     }
 

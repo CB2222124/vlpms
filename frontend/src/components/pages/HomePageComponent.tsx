@@ -1,20 +1,27 @@
 import React, {SyntheticEvent, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 
+/**
+ * Application landing page. The useNavigate hook is used to switch to the search page with (validated) search data
+ * entered on this page.
+ */
 function HomePageComponent() {
 
+    const navigate = useNavigate();
     const [searchData, setSearchData] = useState<string>("");
 
-    const navigate = useNavigate();
+    /**
+     * Provides search data to the search page using useNavigate hook.
+     * @param event Form submit event.
+     */
+    const handleSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
+        navigate("/search", {state: {search: searchData}});
+    }
 
     const handleChange = (event: SyntheticEvent) => {
         const target = event.target as HTMLInputElement;
         setSearchData(target.value);
-    }
-
-    const handleSubmit = (event: SyntheticEvent) => {
-        event.preventDefault();
-        navigate("/search", {state: {search: searchData}});
     }
 
     return (
