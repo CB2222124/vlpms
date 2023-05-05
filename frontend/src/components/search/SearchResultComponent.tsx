@@ -42,7 +42,13 @@ function SearchResultComponent(props: Props) {
             registration: searchResultData.registration.registration
         })
             .then(() => setWishlistMessage(searchResultData.registration.registration + " has been added to your wishlist!"))
-            .catch(() => setWishlistMessage(searchResultData.registration.registration + " is already in your wishlist!"))
+            .catch((error) => {
+                if (error.response.status == 400) {
+                    setWishlistMessage(searchResultData.registration.registration + " is already in your wishlist!")
+                } else {
+                    setWishlistMessage(searchResultData.registration.registration + " is no longer available.")
+                }
+            })
         setShowWishlist(true);
     };
     const closeWishlist = () => setShowWishlist(false);

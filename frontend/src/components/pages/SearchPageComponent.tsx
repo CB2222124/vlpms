@@ -66,7 +66,7 @@ function SearchPageComponent() {
         const url: string = constructSearchUrl(data);
         axios.get(url)
             .then(response => {
-                setSearchResultData(response.data._embedded.listing.map((listing: any) => {
+                setSearchResultData(response.data.content.map((listing: any) => {
                     return {
                         registration: listing.registration,
                         pricePence: listing.pricePence,
@@ -83,9 +83,9 @@ function SearchPageComponent() {
      */
     const constructSearchUrl = (data: SearchData): string => {
         const similar: string = data.similar.toUpperCase().trim();
-        if (similar != "") return `/listing/search/findBySimilarity?target=${similar}&page=${data.page}&size=20`;
-        if (data.style != "") return `/listing/search/findByRegistrationStyleIn?styles=${data.style}&page=${data.page}&size=20&sort=${data.sort}`;
-        return `/listing?page=${data.page}&size=20&sort=${data.sort}`;
+        if (similar != "") return `/listing/search/similar?target=${similar}&page=${data.page}&size=20`;
+        if (data.style != "") return `/listing/search/style?style=${data.style}&page=${data.page}&size=20&sort=${data.sort}`;
+        return `/listing/search?page=${data.page}&size=20&sort=${data.sort}`;
     }
 
     return (

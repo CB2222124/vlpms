@@ -3,6 +3,8 @@ package com.github.cb2222124.vlpms.backend.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.github.cb2222124.vlpms.backend.dto.response.ListingResponse;
+import com.github.cb2222124.vlpms.backend.dto.response.RegistrationResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,4 +64,15 @@ public class Listing {
         }
     }
 
+    /**
+     * Converts a listing entity to a listing response.
+     *
+     * @param listing The listing to convert.
+     * @return A response DTO representing a listing.
+     */
+    public static ListingResponse convertToListingResponse(Listing listing) {
+        Registration registration = listing.getRegistration();
+        return new ListingResponse(listing.getPricePence(), listing.getDateListed(),
+                new RegistrationResponse(registration.getRegistration(), registration.getStyle()));
+    }
 }

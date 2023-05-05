@@ -1,5 +1,7 @@
 package com.github.cb2222124.vlpms.backend.service;
 
+import com.github.cb2222124.vlpms.backend.util.SerializablePage;
+import com.github.cb2222124.vlpms.backend.dto.response.ListingResponse;
 import com.github.cb2222124.vlpms.backend.exception.CustomerException;
 import com.github.cb2222124.vlpms.backend.exception.ListingException;
 import com.github.cb2222124.vlpms.backend.model.Customer;
@@ -12,8 +14,13 @@ import com.github.cb2222124.vlpms.backend.util.RegistrationRegex;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Listing service used to handle listing related business logic.
@@ -26,11 +33,13 @@ public class ListingService {
     private final RegistrationRepository registrationRepository;
     private final CustomerRepository customerRepository;
     private final ListingRepository listingRepository;
+    private final CacheService cacheService;
 
-    public ListingService(RegistrationRepository registrationRepository, CustomerRepository customerRepository, ListingRepository listingRepository) {
+    public ListingService(RegistrationRepository registrationRepository, CustomerRepository customerRepository, ListingRepository listingRepository, CacheService cacheService) {
         this.registrationRepository = registrationRepository;
         this.customerRepository = customerRepository;
         this.listingRepository = listingRepository;
+        this.cacheService = cacheService;
     }
 
     @Transactional
@@ -44,7 +53,21 @@ public class ListingService {
         listingRepository.delete(listing);
         customer.getOwnedRegistrations().add(listing.getRegistration());
         customerRepository.save(customer);
+        cacheService.clearCache("search");
         return listing.getRegistration();
+    }
+
+
+    /**
+     * Converts a Page of listings to a Page of listing DTOs that can be serialised.
+     *
+     * @param listings The page of listings.
+     * @param pageable Pagination information.
+     * @return A serializable page of listing response DTOs.
+     */
+    public SerializablePage<ListingResponse> mapListingPageResponse(Page<Listing> listings, Pageable pageable) {
+        List<ListingResponse> listingResponses = listings.stream().map(Listing::convertToListingResponse).toList();
+        return new SerializablePage<>(new PageImpl<>(listingResponses, pageable, listings.getTotalElements()));
     }
 
     /**
@@ -81,5 +104,4 @@ public class ListingService {
 
         return listing;
     }
-
 }
