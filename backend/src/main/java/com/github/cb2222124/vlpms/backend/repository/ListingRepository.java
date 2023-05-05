@@ -16,8 +16,8 @@ import java.util.Optional;
 /**
  * Listing repository used to query listings.
  */
+@CrossOrigin(origins = "${ALLOWED_ORIGINS}")
 @RepositoryRestResource(collectionResourceRel = "listing", path = "listing")
-@CrossOrigin(origins = "http://localhost:9001")
 public interface ListingRepository extends ListPagingAndSortingRepository<Listing, String> {
 
     /**

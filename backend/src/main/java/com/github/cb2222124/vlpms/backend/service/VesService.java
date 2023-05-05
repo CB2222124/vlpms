@@ -3,6 +3,7 @@ package com.github.cb2222124.vlpms.backend.service;
 import com.github.cb2222124.vlpms.backend.dto.response.VesResponse;
 import com.github.cb2222124.vlpms.backend.exception.VesException;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,12 +20,14 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class VesService {
 
+    @Value("${VES_KEY}")
+    private String KEY;
+    @Value("${VES_URI}")
+    private String URI;
+
     private final WebClient webClient;
 
     public VesService() {
-        //TODO: Provide these fields as env variables or args.
-        String KEY = "";
-        String URI = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles";
         webClient = WebClient.builder()
                 .baseUrl(URI)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)

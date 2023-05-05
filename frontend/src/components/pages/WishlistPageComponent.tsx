@@ -40,7 +40,7 @@ function WishlistPageComponent() {
      * @param id User ID.
      */
     const findWishlist = (id: number) => {
-        axios.get(`http://localhost:8080/customer/${id}/wishlist`)
+        axios.get(`/customer/${id}/wishlist`)
             .then(response => {
                 setListings(response.data.map((listing: any) => {
                     return {

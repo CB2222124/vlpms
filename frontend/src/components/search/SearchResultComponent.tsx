@@ -37,7 +37,7 @@ function SearchResultComponent(props: Props) {
      * or failure modal depending on service availability as well as if the listing was already wishlisted.
      */
     const openWishlist = () => {
-        axios.post("http://localhost:8080/customer/wishlist", {
+        axios.post(`/customer/wishlist`, {
             customerId: userContext?.user?.id,
             registration: searchResultData.registration.registration
         })

@@ -83,9 +83,9 @@ function SearchPageComponent() {
      */
     const constructSearchUrl = (data: SearchData): string => {
         const similar: string = data.similar.toUpperCase().trim();
-        if (similar != "") return `http://localhost:8080/listing/search/findBySimilarity?target=${similar}&page=${data.page}&size=20`;
-        if (data.style != "") return `http://localhost:8080/listing/search/findByRegistrationStyleIn?styles=${data.style}&page=${data.page}&size=20&sort=${data.sort}`;
-        return `http://localhost:8080/listing?page=${data.page}&size=20&sort=${data.sort}`;
+        if (similar != "") return `/listing/search/findBySimilarity?target=${similar}&page=${data.page}&size=20`;
+        if (data.style != "") return `/listing/search/findByRegistrationStyleIn?styles=${data.style}&page=${data.page}&size=20&sort=${data.sort}`;
+        return `/listing?page=${data.page}&size=20&sort=${data.sort}`;
     }
 
     return (

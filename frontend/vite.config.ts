@@ -4,6 +4,8 @@ import react from "@vitejs/plugin-react"
 // https://vitejs.dev/config/
 // noinspection JSUnusedGlobalSymbols
 
+const port = +process.env.PORT || 9000;
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -12,6 +14,6 @@ export default defineConfig({
     },
     host: true,
     strictPort: true,
-    port: 9001
+    port: port
   }
 })

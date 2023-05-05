@@ -27,7 +27,7 @@ function PurchaseModalComponent(props: Props) {
      */
     function handlePurchase(event: any) {
         event.preventDefault();
-        axios.post("http://localhost:8080/registration/assignListing", {
+        axios.post(`/registration/assignListing`, {
             customerId: userContext?.user?.id,
             registration: data.registration.registration
         })

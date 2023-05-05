@@ -30,7 +30,7 @@ function RegistrationComponent(props: Props) {
      */
     function checkTransferable(event: any) {
         event.preventDefault();
-        axios.get(`http://localhost:8080/registration/transferable?registration=${registration.registration}&targetRegistration=${searchRegistration}`)
+        axios.get(`/registration/transferable?registration=${registration.registration}&targetRegistration=${searchRegistration}`)
             .then(response => {
                 if (response.data.transferable) {
                     setMessage(`Great news! ${registration.registration} is eligible for transfer to the vehicle associated with ${searchRegistration}.`);

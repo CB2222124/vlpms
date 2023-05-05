@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/registration")
-@CrossOrigin(origins = "http://localhost:9001")
+@CrossOrigin(origins = "${ALLOWED_ORIGINS}")
 public class RegistrationController {
 
     private final ListingService listingService;

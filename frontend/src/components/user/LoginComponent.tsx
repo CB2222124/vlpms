@@ -36,7 +36,7 @@ function LoginComponent() {
      */
     function login(event: any) {
         event.preventDefault();
-        axios.post("http://localhost:8080/customer/login", {
+        axios.post(`/customer/login`, {
             username: username
         })
             .then(response => {

@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin(origins = "http://localhost:9001")
+@CrossOrigin(origins = "${ALLOWED_ORIGINS}")
 public class CustomerController {
 
     final CustomerService customerService;

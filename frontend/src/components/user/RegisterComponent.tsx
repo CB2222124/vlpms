@@ -35,7 +35,7 @@ function RegisterComponent() {
      */
     function register(event: any) {
         event.preventDefault();
-        axios.post("http://localhost:8080/customer/register", {
+        axios.post(`/customer/register`, {
             username: username
         })
             .then(response => {

@@ -24,7 +24,7 @@ function WishlistItemComponent(props: Props) {
      * this component will no longer be used on the next render cycle.
      */
     function handleRemove() {
-        axios.delete(`http://localhost:8080/customer/wishlist?id=${userContext?.user?.id}&registration=${listing.registration.registration}`)
+        axios.delete(`/customer/wishlist?id=${userContext?.user?.id}&registration=${listing.registration.registration}`)
             .then(response => {
                 setListings(response.data.map((listing: any) => {
                     return {
