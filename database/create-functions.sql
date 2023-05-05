@@ -3,7 +3,7 @@ $$
 DECLARE
     result INTEGER;
 BEGIN
-    result := floor(random() * (1000)) * 100::int;
+    result := (floor(random() * 901) + 100) * 100::int;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -13,7 +13,7 @@ $$
 DECLARE
     result DATE;
 BEGIN
-    result := now() + (random() * (interval '90 days')) + '30 days';
+    result := now() - random() * interval '90 days';
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
